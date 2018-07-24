@@ -11,23 +11,14 @@ Official Torch implementation can be found [here](https://github.com/Yijunmaveri
 - CUDA + CuDNN
 
 ## Prepare images
-Simply put content and image pairs in `images/content` and `images/style` respectively. Note that correspoding conternt and image pairs should have same names.
-
+Simply put  style images in `images/style/style_image` 
 
 ## Style Transfer
 
 ```
-python WCT.py --cuda
+python WCT-capture.py 
 ```
 
-## Results
-<img src="images/content/in1.jpg" width="200" hspace="5"><img src="images/style/in1.jpg" width="200" hspace="5"><img src="images/content/in3.jpg" width="200" hspace="5"><img src="images/style/in3.jpg" width="200" hspace="5">
-
-<img src="samples/in1.jpg" width="400" hspace="10"><img src="samples/in3.jpg" width="400" hspace="10">
-
-<img src="images/content/in2.jpg" width="200" hspace="5"><img src="images/style/in2.jpg" width="200" hspace="5"><img src="images/content/in4.jpg" width="200" hspace="5"><img src="images/style/in4.jpg" width="200" hspace="5">
-
-<img src="samples/in2.jpg" width="400" hspace="10"><img src="samples/in4.jpg" width="400" hspace="10">
 
 ### Acknowledgments
 Many thanks to the author Yijun Li for his kind help.
