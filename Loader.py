@@ -28,7 +28,7 @@ class Dataset(data.Dataset):
         #normalize = transforms.Normalize(mean=[123.68,103.939,116.779],std=[1, 1, 1])
         self.prep = transforms.Compose([
                     transforms.Scale(fineSize),
-                    transforms.ToTensor(),
+                    transforms.ToTensor(),sforms.ToTensor(),
                     #transforms.Lambda(lambda x: x[torch.LongTensor([2,1,0])]), #turn to BGR
                     ])
 

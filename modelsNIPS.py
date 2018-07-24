@@ -101,7 +101,7 @@ class decoder2(nn.Module):
         self.relu5 = nn.ReLU(inplace=True)
         # 112 x 112
 
-        self.unpool = nn.UpsamplingNearest2d(scale_factor=2)
+        self.unpool = nn.Upsample(scale_factor=2)
         # 224 x 224
 
         self.reflecPad6 = nn.ReflectionPad2d((1,1,1,1))
@@ -210,7 +210,7 @@ class decoder3(nn.Module):
         self.relu7 = nn.ReLU(inplace=True)
         # 56 x 56
 
-        self.unpool = nn.UpsamplingNearest2d(scale_factor=2)
+        self.unpool = nn.Upsample(scale_factor=2)
         # 112 x 112
 
         self.reflecPad8 = nn.ReflectionPad2d((1,1,1,1))
@@ -226,7 +226,7 @@ class decoder3(nn.Module):
         self.conv9.bias = torch.nn.Parameter(d.get(8).bias.float())
         self.relu9 = nn.ReLU(inplace=True)
 
-        self.unpool2 = nn.UpsamplingNearest2d(scale_factor=2)
+        self.unpool2 = nn.Upsample(scale_factor=2)
         # 224 x 224
 
         self.reflecPad10 = nn.ReflectionPad2d((1,1,1,1))
@@ -385,7 +385,7 @@ class decoder4(nn.Module):
         self.relu11 = nn.ReLU(inplace=True)
         # 28 x 28
 
-        self.unpool = nn.UpsamplingNearest2d(scale_factor=2)
+        self.unpool = nn.Upsample(scale_factor=2)
         # 56 x 56
 
         self.reflecPad12 = nn.ReflectionPad2d((1,1,1,1))
@@ -416,7 +416,7 @@ class decoder4(nn.Module):
         self.relu15 = nn.ReLU(inplace=True)
         # 56 x 56
 
-        self.unpool2 = nn.UpsamplingNearest2d(scale_factor=2)
+        self.unpool2 = nn.Upsample(scale_factor=2)
         # 112 x 112
 
         self.reflecPad16 = nn.ReflectionPad2d((1,1,1,1))
@@ -433,7 +433,7 @@ class decoder4(nn.Module):
         self.relu17 = nn.ReLU(inplace=True)
         # 112 x 112
 
-        self.unpool3 = nn.UpsamplingNearest2d(scale_factor=2)
+        self.unpool3 = nn.Upsample(scale_factor=2)
         # 224 x 224
 
         self.reflecPad18 = nn.ReflectionPad2d((1,1,1,1))
@@ -654,7 +654,7 @@ class decoder5(nn.Module):
         self.conv15.bias = torch.nn.Parameter(d.get(1).bias.float())
         self.relu15 = nn.ReLU(inplace=True)
 
-        self.unpool = nn.UpsamplingNearest2d(scale_factor=2)
+        self.unpool = nn.Upsample(scale_factor=2)
         # 28 x 28
 
         self.reflecPad16 = nn.ReflectionPad2d((1,1,1,1))
@@ -685,7 +685,7 @@ class decoder5(nn.Module):
         self.relu19 = nn.ReLU(inplace=True)
         # 28 x 28
 
-        self.unpool2 = nn.UpsamplingNearest2d(scale_factor=2)
+        self.unpool2 = nn.Upsample(scale_factor=2)
         # 56 x 56
 
         self.reflecPad20 = nn.ReflectionPad2d((1,1,1,1))
@@ -713,7 +713,7 @@ class decoder5(nn.Module):
         self.conv23.bias = torch.nn.Parameter(d.get(27).bias.float())
         self.relu23 = nn.ReLU(inplace=True)
 
-        self.unpool3 = nn.UpsamplingNearest2d(scale_factor=2)
+        self.unpool3 = nn.Upsample(scale_factor=2)
         # 112 X 112
 
         self.reflecPad24 = nn.ReflectionPad2d((1,1,1,1))
@@ -728,7 +728,7 @@ class decoder5(nn.Module):
         self.conv25.bias = torch.nn.Parameter(d.get(34).bias.float())
         self.relu25 = nn.ReLU(inplace=True)
 
-        self.unpool4 = nn.UpsamplingNearest2d(scale_factor=2)
+        self.unpool4 = nn.Upsample(scale_factor=2)
 
         self.reflecPad26 = nn.ReflectionPad2d((1,1,1,1))
         self.conv26 = nn.Conv2d(64,64,3,1,0)
@@ -743,6 +743,7 @@ class decoder5(nn.Module):
 
     def forward(self,x):
         # decoder
+        
         out = self.reflecPad15(x)
         out = self.conv15(out)
         out = self.relu15(out)
