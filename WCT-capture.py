@@ -107,10 +107,10 @@ if(args.cuda):
 	
 styleSet = os.listdir('./images/style/style_image/')
 
-resolution = 256
+resolution = 300
 #contentImg = Image.open('./images/content/content.jpg')
 
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(1)
 
 ToImage_c = Image.new('RGB',(resolution*3,resolution*3+4))
 for i in range(len(styleSet)):
@@ -151,6 +151,8 @@ while(True):
     #cv2.imshow('ori',frame)
     key = cv2.waitKey(1) & 0xFF
     #print(frame)
+    if key == ord('q'):
+        break
     if key == ord('p'):
         flag = 1
         for img_name in tqdm(styleSet):
@@ -181,7 +183,7 @@ while(True):
             #ToImage.paste(sty,loc_sty)
             ToImage = np.array(ToImage)
             #ToImage = ToImage[:,:,(2,1,0)]
-            cv2.line(ToImage,(i*(3*resolution//len(styleSet)),3*resolution),((i+1)*(3*resolution//len(styleSet)),3*resolution),(185,255,77),7)
+            cv2.line(ToImage,(i*(3*resolution//len(styleSet)),3*resolution),((i+1)*(3*resolution//len(styleSet)),3*resolution),(185,255,77),30)
             text = str((100/len(styleSet))*(i+1))+'%'
             x = int(3*resolution/len(styleSet)*(i+1))
             cv2.putText(ToImage, text, (x, int(3*resolution)), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), lineType=cv2.LINE_AA) 
@@ -199,6 +201,12 @@ while(True):
     ToImage.paste(ori,(resolution*1,resolution*1)) 
     ed = time.time()
     ToImage = np.array(ToImage)
+    text1 = 'Quit:q'
+    text2 = 'Capture:p'
+    text3 = 'Continue: space'
+    cv2.putText(ToImage, text1, (resolution, int(resolution+20)), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), lineType=cv2.LINE_AA)
+    cv2.putText(ToImage, text2, (resolution, int(resolution+40)), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), lineType=cv2.LINE_AA)
+    cv2.putText(ToImage, text3, (resolution, int(resolution+60)), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), lineType=cv2.LINE_AA)
     
         #cv2.imshow('',ToImage)
     if flag == 0:
