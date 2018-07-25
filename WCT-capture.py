@@ -106,11 +106,12 @@ if(args.cuda):
 
 	
 styleSet = os.listdir('./images/style/style_image/')
+contentSet = os.listdir('./images/content/')
 
 resolution = 300
 #contentImg = Image.open('./images/content/content.jpg')
 
-cap = cv2.VideoCapture(1)
+cap = cv2.VideoCapture(0)
 
 ToImage_c = Image.new('RGB',(resolution*3,resolution*3+4))
 for i in range(len(styleSet)):
@@ -124,12 +125,25 @@ for i in range(len(styleSet)):
         else:
             ToImage_c.paste(styleImg_r,((i%3)*resolution,(i//3)*resolution))
 
+k = 0
+name = ['Sketch','Van Gogh','Picasso','Chinese Painting','Monet','Van Gogh','Picasso','Picasso']
 while(True):
+    i = 0
+    flag = 0 
+    
+
     ret, frame = cap.read()    
     if ret == False:
         break
+    key = cv2.waitKey(1) & 0xFF
+    if  k >= len(contentSet):
+        contentImg = frame.copy()
+    else:
+        contentImg = Image.open('./images/content/'+contentSet[k])
+        contentImg = np.array(contentImg)
 
-    contentImg = frame.copy()
+        contentImg = contentImg[:,:,[2,1,0]]
+        contentImg = Image.fromarray(contentImg)
     contentImg_r = imresize(contentImg,[resolution,resolution])
     contentImg = transforms.ToTensor()(contentImg_r)
     contentImg = contentImg.unsqueeze(0)
@@ -143,13 +157,13 @@ while(True):
     #ToImage_bg2 = Image.new('RGB',(resolution,resolution),(255,255,255))
     
 
-    i = 0
-    flag = 0 
+   
     #contentImg_r = contentImg_r[:,:,(2,1,0)]
+    
     ori = Image.fromarray(contentImg_r, 'RGB')
     ToImage.paste(ori,(resolution*1,resolution*1))
     #cv2.imshow('ori',frame)
-    key = cv2.waitKey(1) & 0xFF
+    key = cv2.waitKey(10) & 0xFF
     #print(frame)
     if key == ord('q'):
         break
@@ -183,6 +197,8 @@ while(True):
             #ToImage.paste(sty,loc_sty)
             ToImage = np.array(ToImage)
             #ToImage = ToImage[:,:,(2,1,0)]
+            text1 = name[i]
+            cv2.putText(ToImage, text1, (loc_im[0],loc_im[1]+20), cv2.FONT_HERSHEY_SIMPLEX, 0.7,(0, 0, 255), lineType=cv2.LINE_AA) 
             cv2.line(ToImage,(i*(3*resolution//len(styleSet)),3*resolution),((i+1)*(3*resolution//len(styleSet)),3*resolution),(185,255,77),30)
             text = str((100/len(styleSet))*(i+1))+'%'
             x = int(3*resolution/len(styleSet)*(i+1))
@@ -192,6 +208,10 @@ while(True):
             ToImage = Image.fromarray(ToImage,'RGB')
             if (i+1) == len(styleSet):
                 ToImage.paste(im,loc_im)
+                ToImage = np.array(ToImage)
+                cv2.putText(ToImage, text1, (loc_im[0],loc_im[1]+20), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), lineType=cv2.LINE_AA)
+                ToImage = Image.fromarray(ToImage,'RGB')
+
             i+=1
 
     ToImage = np.array(ToImage)
@@ -201,8 +221,8 @@ while(True):
     ToImage.paste(ori,(resolution*1,resolution*1)) 
     ed = time.time()
     ToImage = np.array(ToImage)
-    text1 = 'Quit:q'
-    text2 = 'Capture:p'
+    text1 = 'Quit:q(quick click twice)'
+    text2 = 'Capture:p(quick click twice)'
     text3 = 'Continue: space'
     cv2.putText(ToImage, text1, (resolution, int(resolution+20)), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), lineType=cv2.LINE_AA)
     cv2.putText(ToImage, text2, (resolution, int(resolution+40)), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), lineType=cv2.LINE_AA)
@@ -211,17 +231,18 @@ while(True):
         #cv2.imshow('',ToImage)
     if flag == 0:
         cv2.imshow('style-transfer',ToImage)
-        key = cv2.waitKey(1) & 0xFF
-        if key == ord('q'):
-            break
+        cv2.waitKey(1)
+        # key = cv2.waitKey(1) & 0xFF
+        # if key == ord('q'):
+        #     break
         
     if flag == 1:
         
         cv2.imshow('style-transfer',ToImage)
-        key = cv2.waitKey(0) & 0xFF
+        key = cv2.waitKey(0)& 0xFF
         if key == ord('q'):
             break
-        
+        k+=1  
         
     #imsave('./outputs/output.png',ToImage)
     
